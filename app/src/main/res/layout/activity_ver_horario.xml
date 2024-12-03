@@ -7,10 +7,12 @@
     <Spinner
         android:id="@+id/spVerDia"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"/>
 
     <ListView
         android:id="@+id/lvClases"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:dividerHeight="1dp"/>
 </LinearLayout>
