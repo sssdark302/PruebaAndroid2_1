@@ -1,0 +1,42 @@
+@startuml
+class FirebaseHelper {
+    + agregarClase(clase: Clase, onComplete: () -> Unit): void
+    + obtenerClases(dia: String, callback: (List<Clase>) -> Unit): void
+    + obtenerClaseActual(callback: (Clase?) -> Unit): void
+}
+
+class Clase {
+    - asignatura: String
+    - dia: String
+    - hora: String
+}
+
+class MainActivity {
+    + onCreate(): void
+}
+
+class AddClaseActivity {
+    + onCreate(): void
+    + btnGuardarClase.onClick(): void
+}
+
+class VerHorarioActivity {
+    + onCreate(): void
+    + spVerDia.onItemSelected(): void
+}
+
+class QueTocaActivity {
+    + onCreate(): void
+    + obtenerClaseActual(): void
+}
+
+MainActivity --> AddClaseActivity : "navega a"
+MainActivity --> VerHorarioActivity : "navega a"
+MainActivity --> QueTocaActivity : "navega a"
+
+AddClaseActivity --> FirebaseHelper : "usa"
+VerHorarioActivity --> FirebaseHelper : "usa"
+QueTocaActivity --> FirebaseHelper : "usa"
+
+FirebaseHelper --> Clase : "gestiona"
+@enduml
