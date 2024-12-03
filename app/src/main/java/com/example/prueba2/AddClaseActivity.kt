@@ -7,34 +7,42 @@ import androidx.appcompat.app.AppCompatActivity
 class AddClaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_clase) // Asegúrate de que este layout es correcto
+        setContentView(R.layout.activity_add_clase)
 
-        // Vincula los elementos del layout a las variables
-        val btnGuardarClase = findViewById<Button>(R.id.btnGuardarClase)
+        // Vincula las vistas
         val etAsignatura = findViewById<EditText>(R.id.etAsignatura)
         val spDia = findViewById<Spinner>(R.id.spDia)
         val tpHora = findViewById<TimePicker>(R.id.tpHora)
+        val btnGuardarClase = findViewById<Button>(R.id.btnGuardarClase)
 
-        // Configura el TimePicker para el formato 24 horas
+        // Configura el TimePicker
         tpHora.setIs24HourView(true)
 
-        // Configura el Spinner con los días de la semana
+        // Configura el Spinner
         val dias = arrayOf("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, dias)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spDia.adapter = adapter
 
-        // Configura el botón para guardar la clase
+        // Botón para guardar la clase
         btnGuardarClase.setOnClickListener {
             val asignatura = etAsignatura.text.toString()
-            val dia = spDia.selectedItem.toString()
+            val dia = spDia.selectedItem?.toString() ?: "Día no seleccionado"
             val hora = "%02d:%02d".format(tpHora.hour, tpHora.minute)
-            val clase = Clase(asignatura, dia, hora)
 
-            // Guarda la clase en Firebase
-            FirebaseHelper().agregarClase(clase) {
-                Toast.makeText(this, "Clase añadida", Toast.LENGTH_SHORT).show()
-                finish() // Cierra la actividad
+            if (asignatura.isBlank()) {
+                Toast.makeText(this, "Por favor, ingresa una asignatura", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val clase = Clase(asignatura, dia, hora)
+            FirebaseHelper().agregarClase(clase) { isSuccessful ->
+                if (isSuccessful) {
+                    Toast.makeText(this, "Clase añadida correctamente", Toast.LENGTH_SHORT).show()
+                    finish() // Cierra la actividad
+                } else {
+                    Toast.makeText(this, "Error al añadir la clase", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

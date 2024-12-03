@@ -1,5 +1,6 @@
 package com.example.prueba2
 
+import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -14,6 +15,11 @@ class FirebaseHelper {
     fun agregarClase(clase: Clase, callback: (Boolean) -> Unit) {
         val id = clasesRef.push().key ?: return
         clasesRef.child(id).setValue(clase).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d("Firebase", "Clase añadida correctamente con ID: $id")
+            } else {
+                Log.e("Firebase", "Error al añadir la clase: ${task.exception?.message}")
+            }
             callback(task.isSuccessful)
         }
     }

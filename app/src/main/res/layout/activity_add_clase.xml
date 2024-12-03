@@ -1,4 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -18,12 +19,11 @@
     <TimePicker
         android:id="@+id/tpHora"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-     ></TimePicker>
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/btnGuardarClase"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Añadir" />
+        android:text="Guardar Clase" />
 </LinearLayout>
