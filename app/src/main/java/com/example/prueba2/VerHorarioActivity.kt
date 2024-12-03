@@ -1,5 +1,15 @@
 package com.example.prueba2
 
+import android.R
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.ListView
+import android.widget.Spinner
+
+val spVerDia = findViewById<Spinner>(R.id.spVerDia)
+val lvClases = findViewById<ListView>(R.id.lvClases)
+
 spVerDia.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val diaSeleccionado = parent?.getItemAtPosition(position).toString()
@@ -10,3 +20,4 @@ spVerDia.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
     }
     override fun onNothingSelected(parent: AdapterView<*>?) {}
 }
+
