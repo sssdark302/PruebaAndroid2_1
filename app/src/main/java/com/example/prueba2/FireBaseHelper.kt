@@ -12,6 +12,8 @@ class FirebaseHelper {
     private val database = FirebaseDatabase.getInstance()
     private val clasesRef = database.getReference("clases")
 
+
+
     fun agregarClase(clase: Clase, callback: (Boolean) -> Unit) {
         val id = clasesRef.push().key ?: return
         clasesRef.child(id).setValue(clase).addOnCompleteListener { task ->
@@ -28,25 +30,32 @@ class FirebaseHelper {
         clasesRef.orderByChild("dia").equalTo(dia).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val clases = task.result?.children?.mapNotNull { it.getValue(Clase::class.java) } ?: emptyList()
+                Log.d("FirebaseHelper", "Clases obtenidas para $dia: ${clases.size}")
+                clases.forEach {
+                    Log.d("FirebaseHelper", "Clase: ${it.asignatura}, Día: ${it.dia}, Hora: ${it.hora}")
+                }
                 callback(clases)
             } else {
+                Log.e("FirebaseHelper", "Error al obtener clases: ${task.exception?.message}")
                 callback(emptyList())
             }
         }
     }
 
+
     fun obtenerClasesEnTiempoReal(callback: (List<Clase>) -> Unit) {
         clasesRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val clases = snapshot.children.mapNotNull { it.getValue(Clase::class.java) }
+                Log.d("FirebaseHelper", "Clases actualizadas en tiempo real: ${clases.size}")
                 callback(clases)
             }
 
             override fun onCancelled(error: DatabaseError) {
-                callback(emptyList()) // Devuelve una lista vacía si hay un error
+                Log.e("FirebaseHelper", "Error en la escucha: ${error.message}")
+                callback(emptyList())
             }
         })
     }
-
 
 }
